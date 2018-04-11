@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   root "products#index"
 
   namespace :admin do
-    resources :restaurants
-    root "restaurants#index"
+    resources :products
+    root "products#index"
   end
 
 end
