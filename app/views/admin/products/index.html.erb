@@ -1,1 +1,12 @@
 <h1>Backstage</h1>
+<ul>
+  <% @products.each do |product| %>
+  <li>
+    <%= product.name %>
+    <%= link_to 'Show', admin_product_path(product) %>
+    <%= link_to 'Edit', edit_admin_product_path(product) %>
+    <%= link_to 'Delete', admin_product_path(product), method: :delete, data: {confirm:"Are you sure?"} %>
+  </li>
+  <% end %>
+</ul>
+<%= link_to 'New Restaurant', new_admin_product_path %>
