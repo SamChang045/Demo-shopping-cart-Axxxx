@@ -1,0 +1,27 @@
+<% if @product.errors.any? %>
+  <h2>We have some errors here !</h2>
+  <ul>
+    <% @product.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_for  [:admin, @product] do |f| %>
+
+  <%= f.label :name,"Name" %>
+  <%= f.text_field :name ,{class: "form-control"}%>
+       
+  <%= f.label :description,"description" %>
+  <%= f.text_area :description ,class: "form-control"%>
+       
+  <%= f.label :price,"Price" %>
+  <%= f.text_field :price,{class: "form-control"} %>
+
+  <%= f.label :image, "Photo" %>
+  <%= image_tag @product.image, width: '300px' if @product.image? %>
+  <%= f.file_field :image %>
+
+  <%= f.submit %>
+  
+<% end %>
