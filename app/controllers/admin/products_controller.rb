@@ -15,11 +15,15 @@ class Admin::ProductsController < ApplicationController
     @product = Product.new(product_params)
     if @product.save
       flash[:notice] = "product was successfully created"
-      redirect_to admin_restaurants_path
+      redirect_to admin_products_path
     else
       flash.now[:alert] = "product was failed to create"
       render :new
     end
+  end
+
+  def show
+    @product = Product.find(params[:id])
   end
 
   private
