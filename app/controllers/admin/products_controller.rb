@@ -46,7 +46,7 @@ class Admin::ProductsController < ApplicationController
   end
 
   def restaurant_params
-    params.require(:product).permit(:name, :description, :price)
+    params.require(:product).permit(:image, :name, :description, :price)
   end
 
 end
