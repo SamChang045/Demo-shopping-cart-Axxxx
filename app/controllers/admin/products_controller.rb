@@ -31,6 +31,13 @@ class Admin::ProductsController < ApplicationController
       flash.now[:alert] = "product was failed to update"
       render :edit
     end
+  end
+
+  def destroy
+    @product.destroy
+    redirect_to admin_products_path
+    flash[:alert] = "product was deleted"
+  end
 
   private
 
