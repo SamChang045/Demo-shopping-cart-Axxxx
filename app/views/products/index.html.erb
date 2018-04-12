@@ -1,1 +1,74 @@
-<h1>Shopping Counter</h1>
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-9">
+      <% @products.each do |product|%>
+        <div class="col-md-1" style="width:20%" id="<%= product.id%>">
+          <div class="product-item clearfix">
+            <%= link_to product_path(product) do %>
+              <img src="<%= product.image%>">
+            <% end %>
+            <div class="item-text">
+              <h5><%= product.name %></h5>
+              <div class="product-description">
+                <%= truncate(product.description, length: 40 )%>
+              </div>           
+              <h6>$<%= product.price %></h6>
+              <button id="add_to_cart" class="btn btn-success">add to Cart</button>    
+            </div>
+          </div>
+        </div>  
+      <% end %>
+    </div>
+
+    <div class="col-md-3"">
+      <% if @cart_items != nil %>
+      <h3>Cart</h3>
+      <hr>
+        <div id="cart-list">
+          <% @cart_items.each do |item|%>
+            <div id="<%= item.product.id%>">
+              <div class="product-item clearfix" >
+                <h5><%= item.product.name %></h5>    
+                <div class="product-image col-md-6">
+                  <%= link_to product_path(item.product) do %>
+                    <img src="<%= item.product.image%>">
+                  <% end %>
+                </div>
+                <div class="col-md-6 cart-item-right">
+                  <p id="price">$ <%= item.product.price %></p>
+                  <% @subtotal+=item.product.price * item.quantity %>              
+                  <div class=" cart-item-button">
+                    <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
+                    <span class="text-muted quantity"> <%= item.quantity %> </span>
+                    <span class="plus-item text-muted glyphicon glyphicon-plus"></span>
+                  </div>
+                  <div style="text-align: right">
+                    <span class="delete-item text-danger glyphicon glyphicon-trash"></span>
+                  </div>                
+
+                </div>                
+              </div>
+            </div>              
+          <% end %>
+        </div>     
+        <hr>
+        <div class="subtotal row">
+          <div class="col-md-6">
+            <h5>SUBTOTAL   </h5>
+          </div>
+          <div class="col-md-6">
+            <h5 id="total-price">$ <%= @subtotal%></h5>
+          </div> 
+        </div>
+        <div class="text-right">
+          <%=link_to "View Cart",cart_items_path,class: "btn btn-primary"%>  
+        </div>  
+      <% end %>
+    </div>
+        
+  </div>
+  <div class="text-center">
+     <%= paginate @products %>
+  </div>
+</div>
