@@ -11,5 +11,12 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :show] do
     post :add_to_cart, on: :member
   end
+
+  resources :cart_items, only:[:index,:destroy] do
+    member do
+      post :plus_quantity
+      post :minus_quantity
+    end
+  end
   
 end

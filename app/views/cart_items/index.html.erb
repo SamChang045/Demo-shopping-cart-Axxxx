@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Shopping List</div>
+    
+    <!-- Table -->
+    <table class="table shop-table" >
+
+      <tr>
+        <th></th>
+        <th></th>
+        <th>Price</th>
+        <th>Qunatity</th>
+      </tr>
+
+      <% @cart_items.each do |item| %>
+        <tr id="<%= item.product.id%>">
+          <td>
+            <img src="<%= item.product.image%>"%>
+          </td>
+          <td valign="center"><%= item.product.name%></td>
+          
+          <td>$<%= item.product.price%></td>
+          <td>
+            <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
+            <span class="text-muted quantity"> <%= item.quantity %> </span>
+            <span class="plus-item text-muted glyphicon glyphicon-plus"></span>
+          </td>
+          <td>
+            $<%= item.product.price*item.quantity%>
+            <% @subtotal+=item.product.price*item.quantity%>
+            <div style="text-align: right; float:right;">
+              <span class="delete-item text-danger glyphicon glyphicon-trash"></span>
+            </div>     
+          </td>
+        </tr>
+
+      <% end%>
+
+      <tr class="subtotal-row">
+        <td></td>
+        <td></td>
+        <td>Subtotal</td>
+        <td></td>
+        <td id="total-price">$<%= @subtotal%></td>
+      </tr>  
+        
+    </table>
+  </div>
+
+  <div class="panel panel-default">
+    <!-- Default panel contents -->
+    
+    <div class="panel-heading">Shipping information</div>
+
+    <%= form_for @order do |f|%>
+      <div class="form-group">
+        
+        <%= f.label :name, "Name" %>
+        <%= f.text_field :name , class: "form-control"%>
+       
+
+        <%= f.label :phone, "Phone" %>
+        <%= f.text_field :phone , class: "form-control"%>
+
+        <%= f.label :address, "Address" %>
+        <%= f.text_field :address , class: "form-control"%>
+
+        <% f.number_field :aomount ,value: @subtotal  %>
+      </div> 
+  </div>
+  
+  <div >
+    <%= f.submit "Checkout",class: "btn btn-primary" %>
+  </div>
+    
+  <% end %>
+  <br>
+</div>
