@@ -98,7 +98,11 @@
       success: function(data){
         var total_price = $(".subtotal.row").find("#total-price");
         var total_price_value = Number(total_price.html().replace('$ ',''));
-        $(total_price).html("$ "+(total_price_value+Number(data["price"])));
+
+        if(current_quantity != 0){
+          $(total_price).html("$ "+(total_price_value+Number(data["price"])));
+        }
+
         var cart_item = $("#cart-list").find("#"+data["id"]);
         if(cart_item.length){
           console.log(data["quantity"]);
