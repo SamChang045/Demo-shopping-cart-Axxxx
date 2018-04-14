@@ -9,17 +9,21 @@
         </div>
         <div class="col-md-8">
 
-          <div class="text-left">
-            <h5><%= @product.name %></h5>
-            <h6>$<%= @product.price %></h6>
-            <p><%= @product.description%></p>               
-          </div>
+          <div class="thumbnail">
+            <div class="text-left">
+              <h5><%= @product.name %></h5>
+              <h6>$<%= @product.price %></h6>
+              <p><%= @product.description%></p>               
+            </div>
 
-          <% if @product.is_favorited?(current_user) %>
+            <hr>
+
+            <% if @product.is_favorited?(current_user) %>
             <%= link_to 'Unfavorite', unfavorite_product_path(@product), method: :post, class: "btn btn-info" %>
-          <% else %>
+            <% else %>
             <%= link_to 'Favorite', favorite_product_path(@product), method: :post, class: "btn btn-primary" %>
-          <% end %>
+            <% end %>
+          </div>
 
           <div class="text-right">
             <div class=" item-button ">
