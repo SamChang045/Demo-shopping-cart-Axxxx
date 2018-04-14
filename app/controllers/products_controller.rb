@@ -25,5 +25,18 @@ class ProductsController < ApplicationController
     @cart_item.save!
     render :json => {:id => @product.id, :name => @product.name, :quantity => @cart_item.quantity, :price => @product.price}
   end
+
+  def favorite
+    @product = Product.find(params[:id])
+    @product.favorites.create!(user: current_user)
+    redirect_back(fallback_location: root_path)  # 導回上一頁
+  end
+
+  def unfavorite
+    @product = Product.find(params[:id])
+    products = Favorite.where(product: @product, user: current_user)
+    favorites.destroy_all
+    redirect_back(fallback_location: root_path)
+  end
   
 end
