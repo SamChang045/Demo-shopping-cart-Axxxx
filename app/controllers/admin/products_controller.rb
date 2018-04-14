@@ -1,52 +1,37 @@
 class Admin::ProductsController < ApplicationController
 
-  before_action :authenticate_user!
-  before_action :authenticate_admin
-  before_action :set_product, only: [:show, :edit, :update]
-
-  def index
+  def index 
     @products = Product.page(params[:page]).per(10)
-  end
-  
-  def new
     @product = Product.new
+    
+  end
+
+  def edit
+    @product =Product.find(params[:id])
+  end
+
+  def destroy
+    @product = Product.find(params[:id])
+    @product.destroy
+    flash[:alert] = "product was successfully deleted"
+    redirect_back(fallback_location: admin_root_path)
   end
 
   def create
     @product = Product.new(product_params)
     if @product.save
-      flash[:notice] = "product was successfully created"
-      redirect_to admin_products_path
+       flash[:notice] = "product was successfully created"
+      redirect_to admin_root_path
     else
-      flash.now[:alert] = "product was failed to create"
-      render :new
+      flash.now[:alert] = "restaurant was failed to created"
+      render :index
     end
   end
 
-  def update
-    if @product.update(product_params)
-      flash[:notice] = "product was successfully updated"
-      redirect_to admin_product_path(@product)
-    else
-      flash.now[:alert] = "product was failed to update"
-      render :edit
-    end
-  end
+  private 
 
-  def destroy
-    @product.destroy
-    redirect_to admin_products_path
-    flash[:alert] = "product was deleted"
-  end
-
-  private
-
-  def set_product
-    @product = Product.find(params[:id])
-  end
-
-  def restaurant_params
-    params.require(:product).permit(:image, :name, :description, :price)
+  def product_params
+    params.require(:product).permit(:name, :description, :price, :image)
   end
 
 end

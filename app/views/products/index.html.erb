@@ -1,6 +1,5 @@
 <div class="container">
   <div class="row">
-
     <div class="col-md-9">
       <% @products.each do |product|%>
         <div class="col-md-1" style="width:20%" id="<%= product.id%>">
@@ -12,19 +11,18 @@
               <h5><%= product.name %></h5>
               <div class="product-description">
                 <%= truncate(product.description, length: 40 )%>
-              </div>           
+              </div>             
               <h6>$<%= product.price %></h6>
-              <button id="add_to_cart" class="btn btn-success">add to Cart</button>    
-            </div>
+              <button id="add_to_cart" class="btn btn-success">add to Cart</button>           
+            </div>           
           </div>
         </div>  
       <% end %>
     </div>
-
     <div class="col-md-3"">
-      <% if @cart_items != nil %>
       <h3>Cart</h3>
       <hr>
+      <% if @cart_items != nil %>
         <div id="cart-list">
           <% @cart_items.each do |item|%>
             <div id="<%= item.product.id%>">
@@ -58,17 +56,129 @@
             <h5>SUBTOTAL   </h5>
           </div>
           <div class="col-md-6">
+            
             <h5 id="total-price">$ <%= @subtotal%></h5>
-          </div> 
+          </div>                    
         </div>
         <div class="text-right">
           <%=link_to "View Cart",cart_items_path,class: "btn btn-primary"%>  
-        </div>  
+        </div>    
       <% end %>
-    </div>
-        
+    </div>    
   </div>
   <div class="text-center">
      <%= paginate @products %>
   </div>
 </div>
+
+<script type="text/javascript">
+
+  $(".product-item").on("click", "#add_to_cart", function(event){
+    var id  = event.target.parentNode.parentNode.parentNode.id;
+    $.ajax({
+      url: "/products/" + id+"/add_to_cart",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      method: "POST",
+      dataType: "json",      
+      success: function(data){
+        var total_price = $(".subtotal.row").find("#total-price");
+        var total_price_value = Number(total_price.html().replace('$ ',''));
+        $(total_price).html("$ "+(total_price_value+Number(data["price"])));
+
+        var cart_item = $("#cart-list").find("#"+data["id"]);
+        if(cart_item.length){
+          console.log(data["quantity"]);
+          $(cart_item).find(".quantity").html(data["quantity"]);
+        }
+        else
+        {
+          cart_item = document.createElement("div");
+          var photo = data["image"];
+          cart_item.id= data["id"];
+          $(cart_item).html($("#cart-product-template").html());                
+          var p_img = $(cart_item).find(".product-image");
+          p_img.append('<img>');
+          p_img.find("img").attr("src",photo);
+          $(cart_item).find("h5").html(data["name"]);
+          $(cart_item).find("#price").html("$ "+data["price"]);
+          $(cart_item).find(".quantity").html(data["quantity"]);
+          $("#cart-list").append(cart_item);
+        }
+
+      }
+    })    
+  }); 
+
+  $("#cart-list").on("click",".delete-item",function(event){
+    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    $.ajax({
+      url: "/cart_items/" + id,
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      method: "DELETE",
+      dataType: "json",
+      success: function(data){
+        var total_price = $(".subtotal.row").find("#total-price");
+        var total_price_value = Number(total_price.html().replace('$ ',''));
+        $(total_price).html("$ "+(total_price_value-Number(data["minus_price"])));
+        $("#cart-list").find("#"+data["id"]).remove();
+      }
+    })
+  });
+
+  $("#cart-list").on("click",".plus-item",function(event){
+    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    $.ajax({
+      url: "/cart_items/" + id +"/plus_quantity",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      method: "POST",
+      dataType: "json",
+      success: function(data){
+        var total_price = $(".subtotal.row").find("#total-price");
+        var total_price_value = Number(total_price.html().replace('$ ',''));
+        $(total_price).html("$ "+(total_price_value+Number(data["price"])));
+        var cart_item = $("#cart-list").find("#"+data["id"]);
+        $(cart_item).find(".quantity").html(data["quantity"]);
+      }
+    })
+  });
+
+  $("#cart-list").on("click",".minus-item",function(event){
+    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    $.ajax({
+      url: "/cart_items/" + id +"/minus_quantity",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      method: "POST",
+      dataType: "json",
+      success: function(data){
+        var total_price = $(".subtotal.row").find("#total-price");
+        var total_price_value = Number(total_price.html().replace('$ ',''));
+        $(total_price).html("$ "+(total_price_value-Number(data["price"])));
+        var cart_item = $("#cart-list").find("#"+data["id"]);
+        $(cart_item).find(".quantity").html(data["quantity"]);
+      }
+    })
+  });
+
+</script>
+
+<script type="text/template" id="cart-product-template">
+
+  <div class="product-item clearfix" >
+    <h5></h5>   
+    <div class="product-image col-md-6">
+    
+    </div>
+    <div class="col-md-6 cart-item-right">
+     <p id="price"></p>              
+      <div class=" cart-item-button">
+        <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
+        <span class="text-muted quantity"></span>
+        <span class="plus-item text-muted glyphicon glyphicon-plus"></span>
+      </div>
+      <div style="text-align: right">
+        <span class="delete-item text-danger glyphicon glyphicon-trash"></span>
+      </div>                  
+    </div>                
+  </div>
+
+</script>

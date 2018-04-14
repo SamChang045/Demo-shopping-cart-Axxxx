@@ -1,14 +1,64 @@
-<h1>Backstage</h1>
-<ul>
-  <% @products.each do |product| %>
-  <li>
-    <%= product.name %>
-    <%= link_to 'Show', admin_product_path(product) %>
-    <%= link_to 'Edit', edit_admin_product_path(product) %>
-    <%= link_to 'Delete', admin_product_path(product), method: :delete, data: {confirm:"Are you sure?"} %>
-  </li>
-  <% end %>
-</ul>
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Product</a></li>
+  </ul>
+  <br>
+  <div class="row">
+    <div class="col-md-9">
+      <table class="table product-table">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th> Image</th>
+            <th>Pridce</th>
+            <th>Option</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product|%>
+            <tr>
+              <td><%= product.name %></td>
+              <td>
+                <img src="<%= product.image %>"%>
+              </td>
+              <td><%= product.price %></td>
+              <td>
+                 <%= link_to '<i class = "glyphicon glyphicon-pencil" aria-hidden="true"></i>'.html_safe , edit_admin_product_path(id: product.id)%>
+              </td>
+              <td>        
+                <%= link_to '<i class = "glyphicon glyphicon-trash" aria-hidden="true"></i>'.html_safe ,admin_product_path(id: product.id),method: :delete ,data:{confirm:"Are you sure>"} ,class: "text-danger"%>
+              </td>         
+              </div>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>      
+    </div>
+    <div class="col-md-3">
+      <h3 class="text-center">New</h3>
+      <hr>
+      <%= form_for [:admin,@product] do |f| %>
+        <div class="form-group">
+          <%= f.label :name,"Name" %>
+          <%= f.text_field :name ,{class: "form-control"}%>
+       
+          <%= f.label :description,"description" %>
+          <%= f.text_area :description ,class: "form-control"%>
+       
+          <%= f.label :price,"Price" %>
+          <%= f.text_field :price,{class: "form-control"} %>
+      
+          <%= f.label :image, "Photo" %>
+          <%= image_tag @product.image, width: '300px' if @product.image? %>
+          <%= f.file_field :image %>
 
-<%= paginate @products %>
-<%= link_to 'New Product', new_admin_product_path %>
+          <%= f.submit class: "btn btn-success" %>
+        </div>
+      <% end %>
+    </div>   
+  </div>
+  <div class="text-center">
+     <%= paginate @products %>
+  </div>
+</div>
