@@ -14,6 +14,13 @@
             <h6>$<%= @product.price %></h6>
             <p><%= @product.description%></p>               
           </div>
+
+          <% if @product.is_favorited?(current_user) %>
+            <%= link_to 'Unfavorite', unfavorite_product_path(@product), method: :post, class: "btn btn-info" %>
+          <% else %>
+            <%= link_to 'Favorite', favorite_product_path(@product), method: :post, class: "btn btn-primary" %>
+          <% end %>
+
           <div class="text-right">
             <div class=" item-button ">
               <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
