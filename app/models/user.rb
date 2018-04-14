@@ -7,5 +7,8 @@ class User < ApplicationRecord
   def admin?
     self.role == "admin"
   end
+
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_products, through: :favorites, source: :product
   
 end
