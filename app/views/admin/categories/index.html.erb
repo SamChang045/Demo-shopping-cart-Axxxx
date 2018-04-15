@@ -25,6 +25,7 @@
           <tr>
             <th>#</th>
             <th>Category Name</th>
+            <th>#</th>
           </tr>
         </thead>
         <tbody>
@@ -32,6 +33,11 @@
           <tr>
             <th scope="row"><%= category.id %></th>
             <td><%= category.name %></td>
+            <td>
+            <!-- 因為我們只有index.html.erb，所以這裡的edit我們加上params[:id]到url裡 -->
+            <!-- index 就能判斷是edit or new，而印出對應的form表單 -->
+            <%= link_to 'Edit', admin_categories_path(id: category.id) %>
+            </td>
           </tr>
           <% end %>
         </tbody>
