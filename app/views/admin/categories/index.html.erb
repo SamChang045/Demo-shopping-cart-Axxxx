@@ -1,5 +1,10 @@
 <div class="container">
-  <h1>Product Categories List</h1>
+  <h1>Products Categories List</h1>
+  <div>
+    <%= link_to 'Product', admin_products_path %> |
+    <%= link_to 'Categories', admin_categories_path %>
+  </div>
+  <br>
   <div class="form-inline" >
     <!-- [:admin, @category] :admin 是 namespace 的路徑。 -->
     <%= form_for [:admin, @category] do |f| %>
