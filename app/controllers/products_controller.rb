@@ -4,7 +4,8 @@ class ProductsController < ApplicationController
   
   def index
     @products = Product.page(params[:page]).per(10)
-    @cart_items = current_cart.cart_items.all    
+    @cart_items = current_cart.cart_items.all
+    @categories = Category.all    
     @subtotal = 0
     session[:form_data] = nil
   end

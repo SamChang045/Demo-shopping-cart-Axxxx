@@ -1,5 +1,12 @@
 <div class="container">
   <div class="row">
+    <ul class="nav nav-pills nav-pills-center">
+      <li role="presentation" class="active"><%= link_to "All the Products", root_path %></li>
+      <% @categories.each do |category| %>
+        <li role="presentation"><%= link_to category.name, category_path(category) %></li>
+      <% end %>
+    </ul>
+    <br>
     <div class="col-md-9">
       <% @products.each do |product|%>
         <div class="col-md-1" style="width:20%" id="<%= product.id%>">
