@@ -1,153 +1,28 @@
 <div class="container">
   <div class="row">
     <ul class="nav nav-pills nav-pills-center">
-      <li role="presentation" class="active"><%= link_to "All the Products", root_path %></li>
       <% @categories.each do |category| %>
         <li role="presentation"><%= link_to category.name, category_path(category) %></li>
       <% end %>
     </ul>
     <br>
-    <div class="col-md-9">
-      <% @products.each do |product|%>
-        <div class="col-md-1" style="width:20%" id="<%= product.id%>">
-          <div class="product-item clearfix">
-            <%= link_to product_path(product) do %>
-              <img src="<%= product.image%>">
-            <% end %>
-            <div class="item-text">
-              <h5><%= product.name %></h5>
-              <div class="product-description">
-                <%= truncate(product.description, length: 40 )%>
-              </div>                     
-            </div>           
-          </div>
-        </div>  
-      <% end %>
-    </div>
-    <div class="col-md-3"">
-      <h3>Cart</h3>
-      <hr>
-      <% if @cart_items != nil %>
-        <div id="cart-list">
-          <% @cart_items.each do |item|%>
-            <div id="<%= item.product.id%>">
-              <div class="product-item clearfix" >
-                <h5><%= item.product.name %></h5>    
-                <div class="product-image col-md-6">
-                  <%= link_to product_path(item.product) do %>
-                    <img src="<%= item.product.image%>">
-                  <% end %>
-                </div>
-                <div class="col-md-6 cart-item-right">
-                  <p id="price">$ <%= item.product.price %></p>
-                  <% @subtotal+=item.product.price * item.quantity %>              
-                  <div class=" cart-item-button">
-                    <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
-                    <span class="text-muted quantity"> <%= item.quantity %> </span>
-                    <span class="plus-item text-muted glyphicon glyphicon-plus"></span>
-                  </div>
-                  <div style="text-align: right">
-                    <span class="delete-item text-danger glyphicon glyphicon-trash"></span>
-                  </div>                
-
-                </div>                
-              </div>
-            </div>              
+    <% @products.each do |product|%>
+      <div class="col-md-1" style="width:20%" id="<%= product.id%>">
+        <div class="product-item clearfix">
+          <%= link_to product_path(product) do %>
+            <img src="<%= product.image%>">
           <% end %>
-        </div>     
-        <hr>
-        <div class="subtotal row">
-          <div class="col-md-6">
-            <h5>SUBTOTAL   </h5>
-          </div>
-          <div class="col-md-6">
-            
-            <h5 id="total-price">$ <%= @subtotal%></h5>
-          </div>                    
+          <div class="item-text">
+            <h5><%= product.name %></h5>
+            <div class="product-description">
+              <%= truncate(product.description, length: 40 )%>
+            </div>                     
+          </div>           
         </div>
-        <div class="text-right">
-          <%=link_to "View Cart",cart_items_path,class: "btn btn-primary"%>  
-        </div>    
-      <% end %>
-    </div>    
+      </div>  
+    <% end %>
   </div>
   <div class="text-center">
      <%= paginate @products %>
   </div>
 </div>
-
-<script type="text/javascript">
-
-  $("#cart-list").on("click",".delete-item",function(event){
-    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-    $.ajax({
-      url: "/cart_items/" + id,
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      method: "DELETE",
-      dataType: "json",
-      success: function(data){
-        var total_price = $(".subtotal.row").find("#total-price");
-        var total_price_value = Number(total_price.html().replace('$ ',''));
-        $(total_price).html("$ "+(total_price_value-Number(data["minus_price"])));
-        $("#cart-list").find("#"+data["id"]).remove();
-      }
-    })
-  });
-
-  $("#cart-list").on("click",".plus-item",function(event){
-    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-    $.ajax({
-      url: "/cart_items/" + id +"/plus_quantity",
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      method: "POST",
-      dataType: "json",
-      success: function(data){
-        var total_price = $(".subtotal.row").find("#total-price");
-        var total_price_value = Number(total_price.html().replace('$ ',''));
-        $(total_price).html("$ "+(total_price_value+Number(data["price"])));
-        var cart_item = $("#cart-list").find("#"+data["id"]);
-        $(cart_item).find(".quantity").html(data["quantity"]);
-      }
-    })
-  });
-
-  $("#cart-list").on("click",".minus-item",function(event){
-    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-    $.ajax({
-      url: "/cart_items/" + id +"/minus_quantity",
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      method: "POST",
-      dataType: "json",
-      success: function(data){
-        var total_price = $(".subtotal.row").find("#total-price");
-        var total_price_value = Number(total_price.html().replace('$ ',''));
-        $(total_price).html("$ "+(total_price_value-Number(data["price"])));
-        var cart_item = $("#cart-list").find("#"+data["id"]);
-        $(cart_item).find(".quantity").html(data["quantity"]);
-      }
-    })
-  });
-
-</script>
-
-<script type="text/template" id="cart-product-template">
-
-  <div class="product-item clearfix" >
-    <h5></h5>   
-    <div class="product-image col-md-6">
-    
-    </div>
-    <div class="col-md-6 cart-item-right">
-     <p id="price"></p>              
-      <div class=" cart-item-button">
-        <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
-        <span class="text-muted quantity"></span>
-        <span class="plus-item text-muted glyphicon glyphicon-plus"></span>
-      </div>
-      <div style="text-align: right">
-        <span class="delete-item text-danger glyphicon glyphicon-trash"></span>
-      </div>                  
-    </div>                
-  </div>
-
-</script>
