@@ -15,13 +15,13 @@
               <p><%= @product.description%></p>   
               <hr>
               <% if @product.is_favorited?(current_user) %>
-              <%= link_to 'Unfavorite', unfavorite_product_path(@product), method: :post, class: "btn btn-info" %>
+                <%= link_to 'Unfavorite', unfavorite_product_path(@product), method: :post, class: "btn btn-info" %>
               <% else %>
-              <%= link_to 'Favorite', favorite_product_path(@product), method: :post, class: "btn btn-primary" %>
+                <%= link_to 'Favorite', favorite_product_path(@product), method: :post, class: "btn btn-primary" %>
               <% end %>     
             </div>
           </div>
-          <div class="text-right">       
+          <div class="text-right">      
             <button id="add_to_cart" class="btn btn-success">add to Cart</button>
           </div>       
         </div>  
