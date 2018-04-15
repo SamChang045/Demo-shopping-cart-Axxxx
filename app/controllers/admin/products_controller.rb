@@ -5,8 +5,7 @@ class Admin::ProductsController < ApplicationController
 
   def index 
     @products = Product.page(params[:page]).per(10)
-    @product = Product.new
-    
+    @product = Product.new  
   end
 
   def edit

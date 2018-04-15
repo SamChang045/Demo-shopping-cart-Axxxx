@@ -7,7 +7,7 @@ namespace :dev do
       Product.create!(name: FFaker::Product::product_name,
         price: 100+rand(1000),
         description: FFaker::Lorem::sentence(30),
-        category: Category.all.sample
+        category_id: Category.all.sample.id
       )
     end
 
