@@ -8,29 +8,20 @@
           <% end %>
         </div>
         <div class="col-md-8">
-
           <div class="thumbnail">
             <div class="text-left">
               <h5><%= @product.name %></h5>
               <h6>$<%= @product.price %></h6>
-              <p><%= @product.description%></p>               
+              <p><%= @product.description%></p>   
+              <hr>
+              <% if @product.is_favorited?(current_user) %>
+              <%= link_to 'Unfavorite', unfavorite_product_path(@product), method: :post, class: "btn btn-info" %>
+              <% else %>
+              <%= link_to 'Favorite', favorite_product_path(@product), method: :post, class: "btn btn-primary" %>
+              <% end %>     
             </div>
-
-            <hr>
-
-            <% if @product.is_favorited?(current_user) %>
-            <%= link_to 'Unfavorite', unfavorite_product_path(@product), method: :post, class: "btn btn-info" %>
-            <% else %>
-            <%= link_to 'Favorite', favorite_product_path(@product), method: :post, class: "btn btn-primary" %>
-            <% end %>
           </div>
-
-          <div class="text-right">
-            <div class=" item-button ">
-              <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
-              <span class="text-muted quantity"> <%= @add_quantity %> </span>
-              <span class="plus-item text-muted glyphicon glyphicon-plus"></span>            
-            </div>       
+          <div class="text-right">       
             <button id="add_to_cart" class="btn btn-success">add to Cart</button>
           </div>       
         </div>  
@@ -176,20 +167,6 @@
         $(cart_item).find(".quantity").html(data["quantity"]);
       }
     })
-  });
-  $(".product-item.display").on("click",".plus-item",function(event){
-    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-    var item_quantity = Number($(".product-item.display").find(".quantity").html()) +1;    
-    $(".product-item.display").find(".quantity").html(item_quantity);
-  });
-  $(".product-item.display").on("click",".minus-item",function(event){
-    var id = event.target.parentNode.parentNode.parentNode.parentNode.id;
-    var item_quantity = Number($(".product-item.display").find(".quantity").html()) -1;
-    if(item_quantity<=0)
-    {
-      item_quantity=0;
-    }
-    $(".product-item.display").find(".quantity").html(item_quantity);
   });
 
 </script>
