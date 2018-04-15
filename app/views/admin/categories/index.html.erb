@@ -1,0 +1,29 @@
+<div class="container">
+
+  <h1>Product Categories List</h1>
+
+  <div class="row">
+
+    <div class="col-md-12">
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Category Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+          <tr>
+            <th scope="row"><%= product.id %></th>
+            <td><%= product.name %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>
