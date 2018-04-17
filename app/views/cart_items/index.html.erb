@@ -15,7 +15,7 @@
           <td>
             <img src="<%= item.product.image%>"%>
           </td>
-          <td valign="center"><%= item.product.name%></td>     
+          <td valign="center"><%= item.product.name%></td>    
           <td>$<%= item.product.price%></td>
           <td>
             <span class="minus-item text-muted glyphicon glyphicon-minus"></span>
@@ -23,12 +23,10 @@
             <span class="plus-item text-muted glyphicon glyphicon-plus"></span>
           </td>
           <td>
-            $<%= item.product.price*item.quantity%>
-            <% @subtotal+=item.product.price*item.quantity%>
             <div style="text-align: right; float:right;">
               <span class="delete-item text-danger glyphicon glyphicon-trash"></span>
             </div>     
-          </td>         
+          </td>    
         </tr>
       <% end%>
       <tr class="subtotal-row">
@@ -37,13 +35,30 @@
         <td>Subtotal</td>
         <td></td>
         <td id="total-price">$<%= @subtotal%></td>
-      </tr>     
+      </tr>      
     </table>
   </div>
   <div class="panel panel-default">
-    <!-- Default panel contents -->
+    <!-- Default panel contents -->  
     <div class="panel-heading">Shipping information</div>
-  <br>
+    <%= form_for @order do |f|%>
+      <div class="form-group">
+        
+        <%= f.label :name, "Name" %>
+        <%= f.text_field :name , class: "form-control"%>
+       
+        <%= f.label :phone, "Phone" %>
+        <%= f.text_field :phone , class: "form-control"%>
+
+        <%= f.label :address, "Address" %>
+        <%= f.text_field :address , class: "form-control"%>
+
+        <% f.number_field :aomount ,value: @subtotal  %>
+        <br>
+        <%= f.submit "Checkout",class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -75,7 +90,6 @@
         var total_price = $(".shop-table").find("#total-price");
         var total_price_value = Number(total_price.html().replace('$',''));
         $(total_price).html("$ "+(total_price_value+Number(data["price"])));
-
         var cart_item = $(".shop-table").find("#"+data["id"]);
         $(cart_item).find(".quantity").html(data["quantity"]);
       }

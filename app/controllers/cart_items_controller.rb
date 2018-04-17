@@ -3,12 +3,11 @@ class CartItemsController < ApplicationController
   def index
       @cart_items = current_cart.cart_items.all
       @subtotal =0
-
-      #if session[:form_data].present?
-      #  @order = Order.new(session[:form_data])
-      #else
-      #  @order = Order.new
-      #end     
+      if session[:form_data].present?
+        @order = Order.new(session[:form_data])
+      else
+        @order = Order.new
+      end     
   end
 
   def plus_quantity
@@ -21,7 +20,6 @@ class CartItemsController < ApplicationController
 
   def minus_quantity
     @cart_item = current_cart.cart_items.find_by(product_id: params[:id])
-    
     if @cart_item.quantity>0
       @cart_item.quantity -=1
       @cart_item.save!
