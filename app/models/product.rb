@@ -16,4 +16,9 @@ class Product < ApplicationRecord
     self.favorited_users.include?(user)
   end
 
+  def count_favorites
+    self.favorites_count = self.favorites.size
+    self.save
+  end
+
 end

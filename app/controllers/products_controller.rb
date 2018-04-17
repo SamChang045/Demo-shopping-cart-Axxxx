@@ -30,6 +30,7 @@ class ProductsController < ApplicationController
   def favorite
     @product = Product.find(params[:id])
     @product.favorites.create!(user: current_user)
+    @product.count_favorites
     redirect_back(fallback_location: root_path)  # 導回上一頁
   end
 
@@ -37,6 +38,7 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     favorites = Favorite.where(product: @product, user: current_user)
     favorites.destroy_all
+    @product.count_favorites
     redirect_back(fallback_location: root_path)
   end
   
