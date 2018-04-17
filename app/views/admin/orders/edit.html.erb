@@ -1,0 +1,46 @@
+<div class="container order-item">
+  <div class="panel panel-default">
+    <!-- Default panel contents -->    
+    <div class="panel-heading order">Order# <%= @order.sn%></div>
+    <div class="col-md-6 panel-info">
+      <table class="table info-box">       
+        <% @order.order_items.each do |item| %>
+          <tr>
+            <td><%= item.product.name%></td>
+            <td> <%= item.quantity%></td>
+            <td>$<%= item.price %></td>              
+          </tr>       
+        <% end %>
+        <tr>
+          <td>Subtotal</td>
+          <td></td>
+          <td>$<%=@order.amount%></td>
+        </tr>
+      </table>
+      <div class="panel panel-default">
+        <div class="panel-heading">Shipping information</div>
+        <div class="col-md-12">
+          <h5>
+            <%= @order.name%>, 
+            <%= @order.phone%>, 
+            <%= @order.address%>
+          </h5>         
+        </div>        
+      </div>      
+    </div>   
+    <div class="col-md-6">
+      <%= form_for [:admin,@order] do |f| %>
+        <div class="form-group">
+          <%= f.label :payment_status,"Payemnt Status" %>
+          <%= select_tag(:payment_status, options_for_select([['No paid', 'No paid'], ['Paided', 'Paided']], selected: @order.payment_status)) %>  
+          <br>
+          <%= f.label :shipping_status,"Shipping Status" %>
+          <%= select_tag(:shipping_status, options_for_select([['Not shipped', 'Not shipped'], ['Shipped', 'Shipped']], selected: @order.shipping_status)) %> 
+          <br>
+          <%= f.submit class: "btn btn-success" %>
+        </div>
+      <% end %>        
+     </div>
+    </div>
+  </div>  
+</div>

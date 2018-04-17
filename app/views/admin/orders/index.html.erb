@@ -1,0 +1,41 @@
+<div class="container">
+  <ul class="nav nav-tabs">
+    <li role="presentation"><%= link_to 'Product',admin_products_path %></li>
+    <li role="presentation" class="active"><a href="#">Order</a></li>
+  </ul>
+  <br>
+  <div class="row">
+    <table class="table product-table">
+      <thead>
+        <tr>
+          <th>Order Number</th>
+          <th>Price</th>
+          <th>Payment status</th>
+          <th>Shipping status</th>
+          <th>Order detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order|%>
+          <tr>
+            <td><%= order.sn %></td>
+            <td>
+              <%= order.amount %>
+            </td>
+            <td><%= order.payment_status %></td>
+            <td>
+               <%= order.shipping_status%>
+            </td>
+            <td>            
+              <%= link_to 'Edit' ,edit_admin_order_path(id: order.id) %>
+            </td>            
+            </div>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>     
+  </div>
+  <div class="text-center">
+     <%= paginate @orders %>
+  </div>
+</div>
