@@ -20,6 +20,10 @@ Rails.application.routes.draw do
       post :favorite
       post :unfavorite
     end
+
+    collection do
+      get  :ranking
+    end
   end
 
   resources :cart_items, only:[:index,:destroy] do
