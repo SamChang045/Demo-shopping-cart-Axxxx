@@ -42,4 +42,8 @@ class ProductsController < ApplicationController
     redirect_back(fallback_location: root_path)
   end
   
+  def ranking
+    @products = Product.order(favorites_count: :desc).limit(10)
+  end
+
 end
