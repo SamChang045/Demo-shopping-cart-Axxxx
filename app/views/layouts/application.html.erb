@@ -36,7 +36,9 @@
             <li>
               <%= link_to('Cart',cart_items_path) %>
             </li>
-
+            <li>
+              <%= link_to('Order',orders_path) %>
+            </li>
             <li><%= link_to('<i class = "glyphicon glyphicon-log-out" aria-hidden="true"></i>Log out'.html_safe, destroy_user_session_path,:method => :delete)%></li> |
             <li><%= link_to('修改密碼', edit_user_registration_path)  %></li>
           <% else %>
