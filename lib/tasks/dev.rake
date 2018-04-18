@@ -5,6 +5,7 @@ namespace :dev do
 
     500.times do |i|
       Product.create!(name: FFaker::Product::product_name,
+        image: File.open(Rails.root.join("app/assets/images/steam.jpg")),
         price: 100+rand(1000),
         description: FFaker::Lorem::sentence(30),
         category_id: Category.all.sample.id

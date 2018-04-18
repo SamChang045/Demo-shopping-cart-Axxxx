@@ -17,10 +17,7 @@ category_list = [
   { name: "Home, Garden, Pets & Tools" },
   { name: "Food & Grocery" },
   { name: "Beauty & Health" },
-  { name: "Toys, Kids & Baby" },
-  { name: "Clothing, Shoes & Jewelry" },
-  { name: "Handmade" },
-  { name: "Sports & Outdoors" }
+  { name: "Toys, Kids & Baby" }
 ]
 
 category_list.each do |category|
