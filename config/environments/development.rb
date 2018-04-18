@@ -27,8 +27,11 @@ Rails.application.configure do
   end
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-
+  #config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true # 預設指令為 false
+  config.action_mailer.default_url_options = { host: "http://localhost:3000" }
+  config.action_mailer.smtp_settings = config_for(:email).symbolize_keys
+  
   config.action_mailer.perform_caching = false
 
   # Print deprecation notices to the Rails logger.

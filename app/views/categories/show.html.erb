@@ -1,5 +1,20 @@
 <div class="container">
   <div class="row">
+    <!-- 使用 Bootstrap components 的 Nav Tabs -->
+    <!-- https://getbootstrap.com/docs/3.3/components/#nav-tabs -->
+    <ul class="nav nav-tabs">
+      <li role="presentation">
+        <%= link_to 'Home Page', root_path %>
+      </li>
+      <li role="presentation">
+        <%= link_to 'TOP10', ranking_products_path %>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
     <ul class="nav nav-pills nav-pills-center">
       <% @categories.each do |category| %>
         <li role="presentation" class=<%= "active" if category == @category %>>

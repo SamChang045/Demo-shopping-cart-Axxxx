@@ -1,32 +1,26 @@
 <div class="container">
   <div class="row">
-
     <!-- 使用 Bootstrap components 的 Nav Tabs -->
     <!-- https://getbootstrap.com/docs/3.3/components/#nav-tabs -->
     <ul class="nav nav-tabs">
       <li role="presentation">
         <%= link_to 'Home Page', root_path %>
       </li>
-      <li role="presentation" class="active">
+      <li role="presentation">
         <%= link_to 'TOP10', ranking_products_path %>
       </li>
     </ul>
-
   </div>
 </div>
 
 <div class="container">
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
-
       <div class="page-header">
         <h1>Top 10 Products</h1>
       </div>
-
-
       <!-- 有多寫ranking-item的class style-->
       <% @products.each do |product| %>
-
         <div class="ranking-item">
           <div class="col-md-3">
             <%= link_to product_path(product) do %>
@@ -43,7 +37,6 @@
           <div class="clearfix"></div>
         </div>
       <% end %>
-
     </div>
   </div>
 </div>
