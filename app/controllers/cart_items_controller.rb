@@ -2,7 +2,12 @@ class CartItemsController < ApplicationController
   
   def index
       @cart_items = current_cart.cart_items.all
+
       @subtotal = 0
+      @cart_items.each do |item|
+        @subtotal += item.product.price * item.quantity
+      end
+
       if session[:form_data].present?
         @order = Order.new(session[:form_data])
       else
