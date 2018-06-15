@@ -32,6 +32,8 @@
       <h4>Payment Status: 
         <% if @order.payment_status == "not_paid" %>
           Not Paid
+        <% elsif @order.payment_status == "paid" %>
+          Paid
         <% end %>
       </h4>
       <h4>Shipping Status: 
