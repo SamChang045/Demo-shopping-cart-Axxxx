@@ -13,8 +13,8 @@ class OrdersController < ApplicationController
       @cart_items = current_cart.cart_items.all
       @order.user_id = current_user.id
       @order.sn = 1000000 + Order.count
-      @order.payment_status = "Not Paid"
-      @order.shipping_status = "Not shipped"
+      @order.payment_status = "not_paid"
+      @order.shipping_status = "not_shipped"
       @order.email = current_user.email
       @order.amount = 0
       if @order.save
@@ -42,7 +42,7 @@ class OrdersController < ApplicationController
 
   def destroy
     @order= Order.find(params[:id])
-    if @order.shipping_status == "Not shipped"
+    if @order.shipping_status == "not_shipped"
       @order.destroy
       redirect_to orders_path
       flash[:notice] = "Order was successfully canceled"
@@ -50,6 +50,21 @@ class OrdersController < ApplicationController
       render :index
       flash[:alert] = "Not allow! Order was shipping"
     end  
+  end
+
+  def checkout_spgateway
+    @order = current_user.orders.find(params[:id])
+    if @order.payment_status != "not_paid"
+      flash[:alert] = "Order has been paid."
+      redirect_to orders_path
+    else
+      @payment = Payment.create!(
+        sn: Time.now.to_i,
+        order_id: @order.id,
+        amount: @order.amount
+      )
+      render layout: false
+    end
   end
 
   def order_params

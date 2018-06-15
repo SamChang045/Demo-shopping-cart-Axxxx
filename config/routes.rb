@@ -32,6 +32,10 @@ Rails.application.routes.draw do
       post :minus_quantity
     end
   end
+
+  resources :orders do
+    post :checkout_spgateway, on: :member
+  end
   
   resources :categories, only: :show
   resources :orders, only:[:index,:create,:show,:update,:destroy]

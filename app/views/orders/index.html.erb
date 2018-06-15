@@ -30,12 +30,23 @@
         </div>      
       </div> 
       <div class="col-md-6">
-        <h4>Payment Status: <%= order.payment_status%></h4>
-        <h4>Shipping Status: <%= order.shipping_status%></h4>
+        <h4>Payment Status: 
+          <% if order.payment_status == "not_paid" %>
+            Not Paid
+          <% end %>
+        </h4>
+        <h4>Shipping Status: 
+          <% if order.shipping_status == "not_shipped" %>
+            Not Shipped
+          <% end %>          
+        </h4>
         <div class="button-group">     
           <button class="btn btn-default">Credit</button>
           <button class="btn btn-default">Web ATM</button>
           <button class="btn btn-default">ATM</button>
+          <% if order.payment_status == "not_paid" %>
+            <%= link_to "Pay Now", checkout_spgateway_order_path(order), method: :post %>
+          <% end %>
           <%= link_to "Cancel",order_path(order.id),method: :DELETE,class:"btn btn-default"%>
         </div>
       </div>     
