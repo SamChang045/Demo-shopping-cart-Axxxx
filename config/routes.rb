@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   end
 
   post 'spgateway/return'
+  post "spgateway/notify"
   
   resources :categories, only: :show
   resources :orders, only:[:index,:create,:show,:update,:destroy]
