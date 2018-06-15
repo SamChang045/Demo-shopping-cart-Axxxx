@@ -166,8 +166,12 @@
       success: function(data){
         var total_price = $(".subtotal.row").find("#total-price");
         var total_price_value = Number(total_price.html().replace('$ ',''));
-        $(total_price).html("$ "+(total_price_value-Number(data["price"])));
 
+        if ((total_price_value - Number(data["price"])) >= 0 )
+        {
+          $(total_price).html("$ "+(total_price_value-Number(data["price"])));
+        }
+        
         var cart_item = $("#cart-list").find("#"+data["id"]);
         $(cart_item).find(".quantity").html(data["quantity"]);
       }
