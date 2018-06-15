@@ -42,12 +42,11 @@
         <% end %>          
       </h4>
       <div class="button-group">     
-        <button class="btn btn-default">Credit</button>
-        <button class="btn btn-default">Web ATM</button>
-        <button class="btn btn-default">ATM</button>
-        <% if @order.payment_status == "not_paid" %>
-          <%= link_to "Pay Now", checkout_spgateway_order_path(@order), method: :post %>
-        <% end %>
+        <% if order.payment_status == "not_paid" && order.shipping_status != "cancelled" %>
+            <% Payment::PAYMENT_METHODS.each do |method| %>
+              <%= link_to method, checkout_spgateway_order_path(order, payment_method: method), method: :post, class:"btn btn-default" %>
+            <% end %>
+        <% end %> 
         <%= link_to "Cancel",order_path(@order),method: :DELETE,class:"btn btn-default"%>
       </div>
     </div>      
