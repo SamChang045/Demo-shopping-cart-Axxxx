@@ -4,6 +4,7 @@ class SpgatewayController < ApplicationController
   def return
     payment = Payment.find_and_process(spagatway_params)
     if payment&.save
+       # send paid email
       flash[:notice] = "#{payment.sn} paid"
     else
       flash[:alert] = "Something wrong!!!"

@@ -42,9 +42,9 @@
         <% end %>          
       </h4>
       <div class="button-group">     
-        <% if order.payment_status == "not_paid" && order.shipping_status != "cancelled" %>
+        <% if @order.payment_status == "not_paid" && @order.shipping_status != "cancelled" %>
             <% Payment::PAYMENT_METHODS.each do |method| %>
-              <%= link_to method, checkout_spgateway_order_path(order, payment_method: method), method: :post, class:"btn btn-default" %>
+              <%= link_to method, checkout_spgateway_order_path(@order, payment_method: method), method: :post, class:"btn btn-default" %>
             <% end %>
         <% end %> 
         <%= link_to "Cancel",order_path(@order),method: :DELETE,class:"btn btn-default"%>
